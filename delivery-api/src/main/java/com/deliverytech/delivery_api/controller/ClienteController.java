@@ -23,7 +23,7 @@ public class ClienteController {
     */
    @GetMapping("/cliente")
    public Cliente getCliente() {
-    return new Cliente("joão","Silva");
+    return new Cliente("joão","Silva", "(11) 98765-4322");
    }
  
       // Simulando um banco de dados com uma lista de clientes
@@ -41,7 +41,7 @@ public class ClienteController {
     // O valor na URL diretamente injetado no método
     // http://localhost:8080/cliente/João/Silva
     @GetMapping("/cliente/{nome}/{sobrenome}/{telefone}")
-    public Cliente getClienteByPathVariable(@PathVariable String nome, @PathVariable String sobrenome @PathVariable String telefone) {
+    public Cliente getClienteByPathVariable(@PathVariable String nome, @PathVariable String sobrenome, @PathVariable String telefone) {
         return new Cliente(nome, sobrenome, telefone);
     }
  

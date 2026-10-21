@@ -29,10 +29,10 @@ public class Cliente {
         this.sobrenome = sobrenome;
         return sobrenome;
     }
-    public String getTelefone() {
+    public String getTelefone(){
         return telefone;
     }
-    public setTelefone(String telefone){
+    public String setTelefone(String telefone){
         this.telefone = telefone;
         return telefone;
     }
