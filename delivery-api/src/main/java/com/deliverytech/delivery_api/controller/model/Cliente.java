@@ -4,10 +4,12 @@ public class Cliente {
    
     private String nome;
     private String sobrenome;
+    private String telefone;
  
-    public Cliente(String nome, String sobrenome) {
+    public Cliente(String nome, String sobrenome, String telefone) {
         this.nome = nome;
         this.sobrenome = sobrenome;
+        this.telefone = telefone;
     }
  
     public String getNome() {
@@ -27,4 +29,13 @@ public class Cliente {
         this.sobrenome = sobrenome;
         return sobrenome;
     }
+    public String getTelefone() {
+        return telefone;
+    }
+    public setTelefone(String telefone){
+        this.telefone = telefone;
+        return telefone;
+    }
+
+
 }

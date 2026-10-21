@@ -28,29 +28,29 @@ public class ClienteController {
  
       // Simulando um banco de dados com uma lista de clientes
     // Retornando uma List
-    // http://localhost:8080/clientes
+    // https://localhost:8080/clientes
     @GetMapping("/clientes")
     public List<Cliente> getClientes() {
         List<Cliente> clientes = new ArrayList<>();
-        clientes.add(new Cliente("João", "Silva"));
-        clientes.add(new Cliente("Maria", "Souza"));
-        clientes.add(new Cliente("Pedro", "Oliveira"));
+        clientes.add(new Cliente("João", "Silva", "(11) 98765-4321"));
+        clientes.add(new Cliente("Maria", "Souza", "(21) 99876-5432"));
+        clientes.add(new Cliente("Pedro", "Oliveira", "(31) 99777-1234"));
         return clientes;
     }
  
     // O valor na URL diretamente injetado no método
     // http://localhost:8080/cliente/João/Silva
-    @GetMapping("/cliente/{nome}/{sobrenome}")
-    public Cliente getClienteByPathVariable(@PathVariable String nome, @PathVariable String sobrenome) {
-        return new Cliente(nome, sobrenome);
+    @GetMapping("/cliente/{nome}/{sobrenome}/{telefone}")
+    public Cliente getClienteByPathVariable(@PathVariable String nome, @PathVariable String sobrenome @PathVariable String telefone) {
+        return new Cliente(nome, sobrenome, telefone);
     }
  
     // build onde os valores são passados como query params
     // https://localhost:8080/cliente/query?nome=João&sobrenome=Silva
     @GetMapping("/cliente/query")
     public Cliente getClienteByQueryParam(
-        @RequestParam String nome, @RequestParam String sobrenome) {
-        return new Cliente(nome, sobrenome);
+        @RequestParam String nome, @RequestParam String sobrenome, @RequestParam String telefone) {
+        return new Cliente(nome, sobrenome, telefone);
     }
  
 }
