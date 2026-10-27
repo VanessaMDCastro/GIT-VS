@@ -1,56 +1,54 @@
 package com.deliverytech.delivery_api.controller;
-
-import com.deliverytech.delivery_api.controller.model.Cliente;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+ 
+import com.deliverytech.delivery_api.model.Cliente;
+ 
+import com.deliverytech.delivery_api.dto.req.ClienteReqDTO;
+import com.deliverytech.delivery_api.dto.res.ClienteResDTO;
+import com.deliverytech.delivery_api.service.ClienteService;
+ 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-import java.util.List;
-
+ 
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 /*
 Definimos através da annotation de que esse arquivo trabalha com
 requisições HTTP/HTTPS
 */
 @RestController
+@RequestMapping("/clientes")
+/*
+Permição de acesso para qualquer origem,
+pois está utilizando a espressão "*"
+*/
+@CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class ClienteController {
-   
-    /*Simular um banco de dados com uma lista de Cliente
-    construir utilizando Spring Boot REST delivery_api
-    através do nosso localhost:8080/cliente
+ 
+    // injetando o serviço de cliente
+    private final ClienteService clienteService;
+ 
+ 
+    /*
+    Utilizando verbo POST para cadastrar cliente
     */
-   @GetMapping("/cliente")
-   public Cliente getCliente() {
-    return new Cliente("joão","Silva", "(11) 98765-4322");
-   }
+    @PostMapping
  
-      // Simulando um banco de dados com uma lista de clientes
-    // Retornando uma List
-    // https://localhost:8080/clientes
-    @GetMapping("/clientes")
-    public List<Cliente> getClientes() {
-        List<Cliente> clientes = new ArrayList<>();
-        clientes.add(new Cliente("João", "Silva", "(11) 98765-4321"));
-        clientes.add(new Cliente("Maria", "Souza", "(21) 99876-5432"));
-        clientes.add(new Cliente("Pedro", "Oliveira", "(31) 99777-1234"));
-        return clientes;
-    }
- 
-    // O valor na URL diretamente injetado no método
-    // http://localhost:8080/cliente/João/Silva
-    @GetMapping("/cliente/{nome}/{sobrenome}/{telefone}")
-    public Cliente getClienteByPathVariable(@PathVariable String nome, @PathVariable String sobrenome, @PathVariable String telefone) {
-        return new Cliente(nome, sobrenome, telefone);
-    }
- 
-    // build onde os valores são passados como query params
-    // https://localhost:8080/cliente/query?nome=João&sobrenome=Silva
-    @GetMapping("/cliente/query")
-    public Cliente getClienteByQueryParam(
-        @RequestParam String nome, @RequestParam String sobrenome, @RequestParam String telefone) {
-        return new Cliente(nome, sobrenome, telefone);
+    /*
+    Anotatio @Valid para validar o objeto cliente recebido no corpo da requisição
+    através da anotação @RequestBody, que por sua vez indica que o obketo cliente será enviado no corpo da requisição
+    */
+    public ResponseEntity<ClienteResDTO>
+    cadastrarCliente(@Valid
+        @RequestBody ClienteReqDTO dto) {
+            ClienteResDTO cliente = clienteService.cadastrarCliente(dto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
     }
  
 }
