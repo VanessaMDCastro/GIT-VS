@@ -1,5 +1,5 @@
 package com.deliverytech.delivery_api.security;
- 
+
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
@@ -15,29 +15,40 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import com.deliverytech.delivery_api.service.AuthService;
- 
+
 import java.io.IOException;
- 
+
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
- 
+
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
- 
+
     @Autowired
     private AuthService authService;
- 
+
     @Autowired
     private JwtUtil jwtUtil;
- 
+
+    // 1. Ignora o filtro para rotas que não precisam de autenticação (Actuator, Swagger, etc.)
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+        return path.startsWith("/actuator")
+                || path.startsWith("/swagger-ui")
+                || path.startsWith("/v3/api-docs")
+                || path.startsWith("/webjars")
+                || path.startsWith("/h2-console");
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
- 
+
         final String requestTokenHeader = request.getHeader("Authorization");
- 
+
         String username = null;
         String jwtToken = null;
- 
+
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = requestTokenHeader.substring(7);
             try {
@@ -52,22 +63,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         } else {
             logger.warn("JWT Token não começa com Bearer String");
         }
- 
+
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
- 
+
             UserDetails userDetails = this.authService.loadUserByUsername(username);
- 
+
             if (jwtUtil.validateToken(jwtToken, userDetails)) {
- 
+
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(
                                 userDetails, null, userDetails.getAuthorities());
- 
+
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
         filterChain.doFilter(request, response);
     }
- 
 }
- 

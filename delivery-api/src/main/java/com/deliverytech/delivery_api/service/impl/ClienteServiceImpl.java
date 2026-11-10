@@ -33,7 +33,7 @@ public class ClienteServiceImpl implements ClienteService {
     public ClienteResDTO cadastrarCliente(ClienteReqDTO dto) {
         // regra de negocios validação de email unico
         if (clienteRepository.findByEmail(dto.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("Email já cadastrato: " + dto.getEmail());
+            throw new IllegalArgumentException("Email já cadastrado: " + dto.getEmail());
         }
 
         // convertendo o DTO em Entidade
