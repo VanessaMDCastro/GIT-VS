@@ -13,7 +13,7 @@ import java.util.Map;
  * Demonstra o uso de recursos modernos do Java 21
  */
 @RestController
-public class Health {
+public class HealthController {
 
     private static final DateTimeFormatter FORMATTER =
         DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -46,7 +46,7 @@ public class Health {
         AppInfo appInfo = new AppInfo(
             "Delivery Tech API",
             "1.0.0",
-            "Vanessa Monica",
+            "Anderson Klay Demoner",
             System.getProperty("java.version"),
             "Spring Boot 4.11.x",
             LocalDateTime.now().format(FORMATTER),
