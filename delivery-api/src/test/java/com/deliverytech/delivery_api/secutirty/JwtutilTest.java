@@ -1,7 +1,8 @@
-package com.deliverytech.delivery_api.security;
+package com.deliverytech.delivery_api.secutirty;
 
 import com.deliverytech.delivery_api.model.Usuario;
 import com.deliverytech.delivery_api.enums.Role;
+import com.deliverytech.delivery_api.security.JwtUtil;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
